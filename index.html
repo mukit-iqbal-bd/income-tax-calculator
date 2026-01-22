@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BD Tax Computation - AY 2025-26</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="tax-header">
+    <h1>Income Tax Calculator 2026</h1>
+    <h3>Assessment Year: 2026-2027</h3>
+</div>
+
+<div class="card">
+    <div class="personal-info-grid">
+        <div class="tr">
+            <label>Name:</label>
+            <input type="text" class="salary-input" placeholder="Full Name">
+        </div>
+        <div class="tr">
+            <label>Phone:</label>
+            <input type="text" class="salary-input" placeholder="01XXX-XXXXXX">
+        </div>
+        <div class="tr">
+            <label>Email:</label>
+            <input type="email" class="salary-input" placeholder="example@mail.com">
+        </div>
+        <div class="tr">
+            <label>Profession:</label>
+            <input type="text" class="salary-input" placeholder="e.g. Service Holder">
+        </div>
+        <div class="tr">
+            <label>TIN:</label>
+            <input type="text" class="salary-input" placeholder="12-digit TIN">
+        </div>
+        <div class="tr">
+            <label>Tax Zone:</label>
+            <input type="text" class="salary-input" placeholder="e.g. Zone 11, Dhaka">
+        </div>
+    </div>
+</div>
+
+        <div class="card" id="employment-section">
+    <h2 class="section-title">1. Income from Employment</h2>
+    
+    <div class="table-header">
+        <span class="col-particular">Particular</span>
+        <span class="col-amount">Gross Income</span>
+    </div>
+
+    <div class="input-rows-container">
+        <div class="tr"><label>Basic Salary</label><input type="text" class="salary-input" oninput="handleInput(this)"></div>
+        <div class="tr"><label>House Rent</label><input type="text" class="salary-input" oninput="handleInput(this)"></div>
+        <div class="tr"><label>Conveyance Allowance</label><input type="text" class="salary-input" oninput="handleInput(this)"></div>
+        <div class="tr"><label>Medical Allowance</label><input type="text" class="salary-input" oninput="handleInput(this)"></div>
+        <div class="tr"><label>Festival Bonus</label><input type="text" class="salary-input" oninput="handleInput(this)"></div>
+        <div class="tr"><label>Other Bonus</label><input type="text" class="salary-input" oninput="handleInput(this)"></div>
+        <div class="tr"><label>Leave Encashment</label><input type="text" class="salary-input" oninput="handleInput(this)"></div>
+        <div class="tr"><label>Employer Contribution to RPF</label><input type="text" class="salary-input" oninput="handleInput(this)"></div>
+    </div>
+
+    <div id="dynamic-rows"></div>
+
+    <div class="controls">
+        <button type="button" class="btn-add" onclick="addRow()">+ Add New Row</button>
+    </div>
+
+    <hr class="divider">
+
+    <div class="summary-container">
+        <div class="tr">
+            <label class="font-bold">Total Gross Salary</label>
+            <span class="result-box" id="total-gross">0</span>
+        </div>
+        <div class="tr">
+            <label class="font-bold text-red">Less: Exempted</label>
+            <span class="result-box text-red" id="exempted-amount">(0)</span>
+        </div>
+        <div class="tr">
+            <label class="font-bold text-green">Taxable Income</label>
+            <span class="result-box bg-green" id="taxable-employment">0</span>
+        </div>
+    </div>
+</div>
+
+<!---------------------RENT--------------------------->
+<div class="card" id="rent-section">
+    <h2 class="section-title">2. Income from Rent</h2>
+    
+    <div class="table-header">
+        <span class="col-particular">Particular</span>
+        <span class="col-amount">Amount</span>
+    </div>
+
+    <div class="input-rows-container">
+        <div class="tr">
+            <label>Gross Annual Rent Received</label>
+            <input type="text" id="r-gross-rent" class="rent-input" placeholder="0" oninput="handleRentInput(this)">
+        </div>
+        <div class="tr">
+            <label>Less: Vacancy Allowance [if any]</label>
+            <input type="text" id="r-vacancy" class="rent-input" placeholder="0" oninput="handleRentInput(this)">
+        </div>
+        
+        <div class="tr">
+            <label class="font-bold">Annual Value (A)</label>
+            <span class="result-box" id="r-annual-value">0</span>
+        </div>
+
+        <hr class="divider">
+
+        <div class="tr">
+            <label>Property Type (for R&M)</label>
+            <select id="r-prop-type" class="salary-input" onchange="calculateRent()" style="border-style: solid;">
+                <option value="0.25">Residential (25%)</option>
+                <option value="0.30">Commercial (30%)</option>
+            </select>
+        </div>
+        
+        <div class="tr">
+            <label>Municipal / Local Taxes</label>
+            <input type="text" id="r-mun-tax" class="rent-input" placeholder="0" oninput="handleRentInput(this)">
+        </div>
+        <div class="tr">
+            <label>Land Revenue</label>
+            <input type="text" id="r-land-revenue" class="rent-input" placeholder="0" oninput="handleRentInput(this)">
+        </div>
+        <div class="tr">
+            <label>Interest on Loan (Acquisition/Const.)</label>
+            <input type="text" id="r-loan-interest" class="rent-input" placeholder="0" oninput="handleRentInput(this)">
+        </div>
+        <div class="tr">
+            <label>Insurance Premiums</label>
+            <input type="text" id="r-insurance" class="rent-input" placeholder="0" oninput="handleRentInput(this)">
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="summary-container">
+        <div class="tr">
+            <label class="font-bold text-red">Total Allowable Deductions (B)</label>
+            <span class="result-box text-red" id="r-total-deductions">(0)</span>
+        </div>
+        <div class="tr">
+            <label class="font-bold text-green">Net Rental Income (A - B)</label>
+            <span class="result-box bg-green" id="r-net-rent">0</span>
+        </div>
+    </div>
+</div>
+
+<!-----------------------AGRICULTURE--------------->
+<div class="card" id="agriculture-section">
+    <h2 class="section-title">3. Agricultural Income</h2>
+    
+    <div class="table-header">
+        <span class="col-particular">Particular</span>
+        <span class="col-amount">Amount</span>
+    </div>
+
+    <div class="input-rows-container">
+        <div class="tr">
+            <label>Sale of Crops</label>
+            <input type="text" id="ag-crop-sale" class="agri-input" placeholder="0" oninput="handleAgriInput(this)">
+        </div>
+        <div class="tr">
+            <label>Income from Borga</label>
+            <input type="text" id="ag-borga" class="agri-input" placeholder="0" oninput="handleAgriInput(this)">
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="summary-container">
+        <div class="tr">
+            <label class="font-bold">Gross Agricultural Income</label>
+            <span class="result-box" id="ag-gross-income">0</span>
+        </div>
+        <div class="tr">
+            <label class="font-bold text-red">Less: Production Cost (60% of Sales)</label>
+            <span class="result-box text-red" id="ag-prod-cost">(0)</span>
+        </div>
+        <div class="tr">
+            <label class="font-bold text-green">Taxable Agricultural Income</label>
+            <span class="result-box bg-green" id="ag-taxable-income">0</span>
+        </div>
+    </div>
+</div>
+<!-------------------BUSINESS---------------------------->
+<div class="card" id="business-section">
+    <h2 class="section-title">4. Income from Business</h2>
+    
+    <div class="table-header">
+        <span class="col-particular">Business Activity / Source</span>
+        <span class="col-amount">Net Profit / Income</span>
+    </div>
+
+    <div id="business-rows">
+        <div class="tr">
+            <input type="text" placeholder="e.g., Retail Shop" class="col-particular-input" style="flex:2; border:none; border-bottom:1px solid #eee; outline:none; margin-right:10px;">
+            <div class="amount-with-del">
+                <input type="text" class="business-input salary-input" placeholder="0" oninput="handleBusinessInput(this)">
+                <button type="button" class="btn-del" onclick="removeBusinessRow(this)">×</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button type="button" class="btn-add" onclick="addBusinessRow()">+ Add New Business Source</button>
+    </div>
+
+    <hr class="divider">
+
+    <div class="summary-container">
+        <div class="tr">
+            <label class="font-bold text-green">Total Income from Business</label>
+            <span class="result-box bg-green" id="total-business-income">0</span>
+        </div>
+    </div>
+</div>
+<!-------------CAPITAL GAIN--------------------------->
+<div class="card" id="capital-gain-section">
+    <h2 class="section-title">5. Capital Gain</h2>
+    
+    <div class="table-header">
+        <span class="col-particular">Source of Gain</span>
+        <span class="col-amount">Taxable Amount</span>
+    </div>
+
+    <div class="input-rows-container">
+        <div class="tr">
+            <label>Income from sale of Land</label>
+            <input type="text" id="cg-land" class="cg-input salary-input" placeholder="0" oninput="handleCGInput(this)">
+        </div>
+        
+        <div class="tr">
+            <label>Income from sale of Share</label>
+            <input type="text" id="cg-share-raw" class="salary-input" placeholder="0" oninput="handleCGInput(this)">
+        </div>
+        <div class="tr deduction-row" style="margin-top: -5px; margin-bottom: 10px;">
+            <label style="font-size: 0.8rem; padding-left: 10px;">↳ Share Exemption (Up to 5M)</label>
+            <span id="cg-share-exempt" style="font-size: 0.85rem; color: #d63031;">(0)</span>
+        </div>
+
+        <div class="tr">
+            <label>Sale of Machinery (Owned > 5 yrs)</label>
+            <input type="text" id="cg-mach-old" class="cg-input salary-input" placeholder="0" oninput="handleCGInput(this)">
+        </div>
+        
+        <div class="tr">
+            <label>Sale of Machinery (Owned < 5 yrs)</label>
+            <input type="text" id="cg-mach-new" class="cg-input salary-input" placeholder="0" oninput="handleCGInput(this)">
+        </div>
+    </div>
+
+    <div id="cg-dynamic-rows"></div>
+
+    <div class="controls">
+        <button type="button" class="btn-add" onclick="addCGRow()">+ Add Other Capital Asset</button>
+    </div>
+
+    <hr class="divider">
+
+    <div class="summary-container">
+        <div class="tr">
+            <label class="font-bold text-green">Total Taxable Capital Gain</label>
+            <span class="result-box bg-green" id="total-cg-income">0</span>
+        </div>
+    </div>
+</div>
+<!----------------------FINANCIAL ASSETS--------------->
+<div class="card" id="financial-section">
+    <h2 class="section-title">6. Income from Financial Assets</h2>
+    
+    <div class="table-header">
+        <span class="col-particular">Source of Interest / Dividend</span>
+        <span class="col-amount">Gross Income</span>
+    </div>
+
+    <div class="input-rows-container">
+        <div class="tr">
+            <label>Interest from Sanchaypatra</label>
+            <input type="text" id="fin-sanchay" class="fin-input salary-input" placeholder="0" oninput="handleFinInput(this)">
+        </div>
+        <div class="tr">
+            <label>Interest from FDR</label>
+            <input type="text" id="fin-fdr" class="fin-input salary-input" placeholder="0" oninput="handleFinInput(this)">
+        </div>
+        <div class="tr">
+            <label>Interest from Savings Deposit</label>
+            <input type="text" id="fin-savings" class="fin-input salary-input" placeholder="0" oninput="handleFinInput(this)">
+        </div>
+        <div class="tr">
+            <label>Dividend Income</label>
+            <input type="text" id="fin-dividend" class="fin-input salary-input" placeholder="0" oninput="handleFinInput(this)">
+        </div>
+    </div>
+
+    <div id="fin-dynamic-rows"></div>
+
+    <div class="controls">
+        <button type="button" class="btn-add" onclick="addFinRow()">+ Add Other Financial Source</button>
+    </div>
+
+    <hr class="divider">
+
+    <div class="summary-container">
+        <div class="tr">
+            <label class="font-bold text-green">Total Income from Financial Assets</label>
+            <span class="result-box bg-green" id="total-fin-income">0</span>
+        </div>
+    </div>
+</div>
+<!---------------------------OTHER SOURCES------------->
+<div class="card" id="other-sources-section">
+    <h2 class="section-title">7. Income from Other Sources</h2>
+    
+    <div class="table-header">
+        <span class="col-particular">Source Particulars</span>
+        <span class="col-amount">Net Income</span>
+    </div>
+
+    <div id="other-rows">
+        <div class="tr">
+            <input type="text" placeholder="e.g., Honorary Fee" class="col-particular-input" style="flex:2; border:none; border-bottom:1px solid #eee; outline:none; margin-right:10px;">
+            <div class="amount-with-del">
+                <input type="text" class="other-input salary-input" placeholder="0" oninput="handleOtherInput(this)">
+                <button type="button" class="btn-del" onclick="removeOtherRow(this)">×</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button type="button" class="btn-add" onclick="addOtherRow()">+ Add New Source</button>
+    </div>
+
+    <hr class="divider">
+
+    <div class="summary-container">
+        <div class="tr">
+            <label class="font-bold text-green">Total Income from Other Sources</label>
+            <span class="result-box bg-green" id="total-other-income">0</span>
+        </div>
+    </div>
+</div>
+<!-----------------------SPOUSE--------------------->
+<div class="card" id="spouse-minor-section">
+    <h2 class="section-title">8. Income of Spouse or Dependent Minor Child</h2>
+    
+    <div class="table-header">
+        <span class="col-particular">Particulars</span>
+        <span class="col-amount">Net Income</span>
+    </div>
+
+    <div id="spouse-minor-rows">
+        <div class="tr">
+            <input type="text" placeholder="e.g., Spouse's Salary" class="col-particular-input" style="flex:2; border:none; border-bottom:1px solid #eee; outline:none; margin-right:10px;">
+            <div class="amount-with-del">
+                <input type="text" class="spouse-minor-input salary-input" placeholder="0" oninput="handleSpouseMinorInput(this)">
+                <button type="button" class="btn-del" onclick="removeSpouseMinorRow(this)">×</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button type="button" class="btn-add" onclick="addSpouseMinorRow()">+ Add New Entry</button>
+    </div>
+
+    <hr class="divider">
+
+    <div class="summary-container">
+        <div class="tr">
+            <label class="font-bold text-green">Total Aggregated Income</label>
+            <span class="result-box bg-green" id="total-spouse-minor-income">0</span>
+        </div>
+    </div>
+</div>
+<!----------------------------------TOTAL INCOME----------->
+<!-- Total Income Summary-->
+<div class="card" id="summary-section">
+    <h2 class="section-title">Total Taxable Income Summary</h2>
+    
+    <div class="table-header">
+        <span class="col-particular">Heads of Income</span>
+        <span class="col-amount">Taxable Amount</span>
+    </div>
+
+    <div id="summary-list-container">
+        <div class="tr summary-row" id="sum-row-1" style="display:none;">
+            <label>1. Income from Employment</label>
+            <span class="result-box" id="sum-val-1">0</span>
+        </div>
+        <div class="tr summary-row" id="sum-row-2" style="display:none;">
+            <label>2. Income from Rent</label>
+            <span class="result-box" id="sum-val-2">0</span>
+        </div>
+        <div class="tr summary-row" id="sum-row-3" style="display:none;">
+            <label>3. Agricultural Income</label>
+            <span class="result-box" id="sum-val-3">0</span>
+        </div>
+        <div class="tr summary-row" id="sum-row-4" style="display:none;">
+            <label>4. Income from Business</label>
+            <span class="result-box" id="sum-val-4">0</span>
+        </div>
+        <div class="tr summary-row" id="sum-row-5" style="display:none;">
+            <label>5. Capital Gain</label>
+            <span class="result-box" id="sum-val-5">0</span>
+        </div>
+        <div class="tr summary-row" id="sum-row-6" style="display:none;">
+            <label>6. Income from Financial Assets</label>
+            <span class="result-box" id="sum-val-6">0</span>
+        </div>
+        <div class="tr summary-row" id="sum-row-7" style="display:none;">
+            <label>7. Income from Other Sources</label>
+            <span class="result-box" id="sum-val-7">0</span>
+        </div>
+        <div class="tr summary-row" id="sum-row-8" style="display:none;">
+            <label>8. Spouse/Minor Child Income</label>
+            <span class="result-box" id="sum-val-8">0</span>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="summary-container">
+        <div class="tr">
+            <label class="font-bold" style="font-size: 1.1rem;">Total Taxable Income</label>
+            <span class="result-box bg-green" id="grand-total-income" style="font-size: 1.1rem; height: 45px;">0</span>
+        </div>
+    </div>
+</div>
+<!-- END of Total summary-->
+
+<!-------------- Investment------------------>
+<div class="card" id="rebate-computation-section">
+    <h2 class="section-title">10. Investment Rebate Computation</h2>
+    
+    <div class="table-header">
+        <span class="col-particular">Investment Sector & Limits</span>
+        <span class="col-amount">Allowable Amount</span>
+    </div>
+
+    <div class="input-rows-container">
+        <div class="tr">
+            <label>RPF (Employer Contribution x 2)</label>
+            <input type="text" id="reb-rpf" class="reb-calc-input salary-input" placeholder="0" oninput="handleRebateInput(this)">
+        </div>
+
+        <div class="tr" style="background: #fcfcfc; border-radius: 4px; padding: 10px;">
+            <div style="flex: 2;">
+                <label>Insurance: Lower of (Paid vs 10% Policy)</label><br>
+                <small style="color:#7f8c8d;">Paid: <input type="text" id="ins-paid" style="width:70px; font-size:11px;" oninput="handleRebateInput(this)"> 
+                Policy: <input type="text" id="ins-policy" style="width:70px; font-size:11px;" oninput="handleRebateInput(this)"></small>
+            </div>
+            <span class="result-box" id="res-insurance">0</span>
+        </div>
+
+        <div class="tr">
+            <label>Sanchaypatra (Max 500,000)</label>
+            <input type="text" id="reb-sanchay" class="salary-input" placeholder="0" oninput="handleRebateInput(this)">
+        </div>
+
+        <div class="tr">
+            <label>FDR (Max 120,000)</label>
+            <input type="text" id="reb-fdr" class="salary-input" placeholder="0" oninput="handleRebateInput(this)">
+        </div>
+
+        <div class="tr">
+            <label>Shares (Full Amount)</label>
+            <input type="text" id="reb-shares" class="reb-calc-input salary-input" placeholder="0" oninput="handleRebateInput(this)">
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="summary-container" style="background: #fafafa; padding: 15px; border-radius: 8px;">
+        <h3 style="font-size: 0.9rem; margin-top: 0; color: #2c3e50;">Rebate Comparison (Lower of 1, 2, or 3)</h3>
+        
+        <div class="tr">
+            <label>1. 15% of Actual Investment</label>
+            <span class="result-box" id="reb-opt-1">0</span>
+        </div>
+        <div class="tr">
+            <label>2. 3% of Total Taxable Income</label>
+            <span class="result-box" id="reb-opt-2">0</span>
+        </div>
+        <div class="tr">
+            <label>3. Statutory Limit</label>
+            <span class="result-box">1,000,000</span>
+        </div>
+
+        <hr class="divider">
+
+        <div class="tr">
+            <label class="font-bold text-green">Final Investment Rebate</label>
+            <span class="result-box bg-green" id="final-rebate-amount">0</span>
+        </div>
+    </div>
+</div>
+
+<!---=====================Rebate calculation END=======-->
+
+<!---------------Tax Liability Calculation----------->
+<div class="card" id="prepaid-tax-card">
+    <h2 class="section-title">11. Tax Deductions & Advance Tax (AIT)</h2>
+    <div class="input-rows-container">
+        <div class="tr">
+            <label>TDS on Selling Land</label>
+            <input type="text" id="v6-land-tds" class="salary-input" placeholder="0" oninput="formatV6(this)">
+        </div>
+        <div class="tr">
+            <label>AIT from Salary</label>
+            <input type="text" id="v6-salary-ait" class="salary-input" placeholder="0" oninput="formatV6(this)">
+        </div>
+        <div class="tr">
+            <label>Other AIT (if any)</label>
+            <input type="text" id="v6-other-ait" class="salary-input" placeholder="0" oninput="formatV6(this)">
+        </div>
+    </div>
+    <div style="text-align: center; margin-top: 25px;">
+        <button type="button" class="btn-calculate" style="background:#2c3e50; color:white; padding:15px 35px; border-radius:8px; border:none; cursor:pointer; font-weight:bold;" onclick="runV6FinalCalculation()">Calculate Tax Liability Now</button>
+    </div>
+</div>
+
+<div class="card" id="v6-segregation-card" style="display:none; margin-top:20px;">
+    <h2 class="section-title">12. Segregated Taxable Income</h2>
+    <div class="input-rows-container">
+        <div class="tr"><label>Regular Tax Income (A)</label><span class="result-box" id="v6-seg-a">0</span></div>
+        <div class="tr"><label>Capital Gain Income (B)</label><span class="result-box" id="v6-seg-b">0</span></div>
+        <div class="tr"><label>Minimum Tax Income (C)</label><span class="result-box" id="v6-seg-c">0</span></div>
+        <div class="tr"><label>Final Settlement Income (D)</label><span class="result-box" id="v6-seg-d">0</span></div>
+    </div>
+</div>
+
+<div class="card" id="v6-computation-card" style="display:none; margin-top:20px;">
+    <h2 class="section-title">13. Tax Liability Calculation</h2>
+    
+    <div id="v6-slab-container"></div>
+
+    <div class="input-rows-container">
+        <div class="tr">
+            <label>Add: Capital Gain Tax [(B) x 15%]</label>
+            <span class="result-box" id="v6-cgtax">0</span>
+        </div>
+        <div class="tr">
+            <label class="font-bold">Gross Tax Payable</label>
+            <span class="result-box" id="v6-gross-total">0</span>
+        </div>
+        <div class="tr">
+            <label class="text-red">Less: Investment Rebate</label>
+            <span class="result-box text-red" id="v6-rebate">0</span>
+        </div>
+        <div class="tr">
+            <label class="font-bold text-green">(i) Net Tax Payable</label>
+            <span class="result-box bg-green" id="v6-net-i">0</span>
+        </div>
+    </div>
+
+    <hr class="divider">
+    <h3 style="font-size:0.9rem; margin:15px 0 10px 10px; color:#2c3e50;">Less: Final Tax & TDS Paid</h3>
+
+    <div class="input-rows-container">
+        <div class="tr"><label>Interest from Sanchaypatra (10%)</label><span class="result-box" id="v6-tds-sanchay">0</span></div>
+        <div class="tr"><label>TDS on Selling Land</label><span class="result-box" id="v6-tds-land">0</span></div>
+        <div class="tr"><label>Interest from FDR (10%)</label><span class="result-box" id="v6-tds-fdr">0</span></div>
+        <div class="tr"><label>Interest from Savings/Dividend (10%)</label><span class="result-box" id="v6-tds-savings">0</span></div>
+        <div class="tr"><label>AIT from Salary</label><span class="result-box" id="v6-tds-salary">0</span></div>
+        <div class="tr"><label>Other AIT</label><span class="result-box" id="v6-tds-other">0</span></div>
+        <div class="tr" style="background:#f9f9f9;">
+            <label class="font-bold">(ii) Total Tax Paid</label>
+            <span class="result-box" id="v6-total-paid-ii">0</span>
+        </div>
+    </div>
+
+    <div class="summary-container" style="margin-top:25px; border-top: 2px solid #2c3e50; padding-top:20px;">
+        <div class="tr">
+            <label class="font-bold" style="font-size:1.1rem;" id="v6-final-label">Income Tax Payable / (Refund)</label>
+            <span class="result-box" id="v6-final-val" style="font-size:1.2rem; height:50px; font-weight:bold;">0</span>
+        </div>
+    </div>
+</div>
+<!----------------------Tax Liability END------------>
+
+    <script src="script.js"></script>
+</body>
+</html>
