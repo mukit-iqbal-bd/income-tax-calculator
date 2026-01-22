@@ -1,0 +1,105 @@
+:root {
+    --primary-green: #10ac84;
+    --error-red: #d63031;
+    --border-color: #ddd;
+}
+
+.card { 
+    background: white; 
+    padding: 25px; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
+    max-width: 650px; 
+    margin: 20px auto; 
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.section-title { color: #2c3e50; border-bottom: 2px solid var(--primary-green); padding-bottom: 10px; margin-bottom: 20px; }
+
+.table-header { display: flex; font-weight: bold; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; color: #7f8c8d; }
+.col-particular { flex: 2; }
+.col-amount { flex: 1; text-align: right; padding-right: 10px; }
+
+.tr { display: flex; align-items: center; padding: 6px 0; }
+.tr label { flex: 2; font-size: 0.95rem; color: #34495e; }
+
+/* Input and Result Box Design */
+.salary-input, .result-box { 
+    flex: 1; 
+    width: 160px; 
+    height: 38px;
+    text-align: right; 
+    padding: 0 12px; 
+    border: 1px solid var(--border-color); 
+    border-radius: 6px; 
+    font-family: 'Courier New', monospace; 
+    font-weight: bold; 
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    box-sizing: border-box;
+}
+
+.salary-input:focus { border-color: var(--primary-green); outline: none; }
+
+/* Result Specific Styling */
+.result-box { background-color: #f9f9f9; color: #2c3e50; border-style: dashed; }
+.bg-green { background-color: #f1fcf9; border: 1px solid var(--primary-green); }
+.text-red { color: var(--error-red); }
+.text-green { color: var(--primary-green); }
+.font-bold { font-weight: bold; }
+
+.divider { border: 0; border-top: 1px solid #eee; margin: 20px 0; }
+
+/* Buttons */
+.btn-add { background: var(--primary-green); color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600; margin-top: 5px; }
+.amount-with-del { display: flex; align-items: center; flex: 1; justify-content: flex-end; }
+.btn-del { background: #ff7675; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; margin-left: 8px; font-size: 12px; }
+
+/* Header */
+/* Centered Header Styles */
+.tax-header {
+    text-align: center;
+    margin: 40px 0 20px 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.tax-header h1 {
+    font-size: 2.2rem;
+    color: #2c3e50;
+    margin: 0;
+    font-weight: 800;
+}
+
+.tax-header h3 {
+    font-size: 1.3rem;
+    color: #34495e;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+/* Two-Column Grid for Personal Info */
+.personal-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 15px 40px; /* Space between rows and columns */
+    padding: 10px;
+}
+
+/* Responsive adjustment for mobile phones */
+@media (max-width: 600px) {
+    .personal-info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.personal-info-grid .tr {
+    border-bottom: 1px solid #eee;
+    padding: 8px 0;
+}
+
+.personal-info-grid label {
+    font-weight: 600;
+    min-width: 100px;
+}
